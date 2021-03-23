@@ -67,7 +67,8 @@ This function should only modify configuration layer settings."
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom
-            shell-default-shell 'eshell)
+            shell-default-shell 'term
+            shell-default-term-shell "/bin/zsh")
      shell-scripts
      speed-reading
      spell-checking
@@ -516,19 +517,19 @@ It should only modify the values of Spacemacs settings."
 
    ;; Either nil or a number of seconds. If non-nil zone out after the specified
    ;; number of seconds. (default nil)
-   dotspacemacs-zone-out-when-idle nil
+   dotspacemacs-zone-out-when-idle 300
 
    ;; Run `spacemacs/prettify-org-buffer' when
    ;; visiting README.org files of Spacemacs.
    ;; (default nil)
-   dotspacemacs-pretty-docs nil
+   dotspacemacs-pretty-docs t
 
    ;; If nil the home buffer shows the full path of agenda items
    ;; and todos. If non nil only the file name is shown.
    dotspacemacs-home-shorten-agenda-source nil
 
    ;; If non-nil then byte-compile some of Spacemacs files.
-   dotspacemacs-byte-compile nil))
+   dotspacemacs-byte-compile t))
 
 (defun dotspacemacs/user-env ()
   "Environment variables setup.
@@ -544,10 +545,10 @@ This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
+  ;; Window Setup
   (tool-bar-mode -1)
   (menu-bar-mode -1)
   (add-to-list 'default-frame-alist '(alpha 90 90)))
-
 
 (defun dotspacemacs/user-load ()
   "Library to load while dumping.
@@ -561,8 +562,10 @@ dump.")
 This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
-before packages are loaded.")
-
+before packages are loaded."
+  (add-hook 'prog-mode-hook 'highlight-indentation-mode)
+  (add-hook 'prog-mode-hook 'display-fill-column-indicator-mode)
+  )
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
